@@ -26,6 +26,7 @@ router.post('/create',
 router.get('/edit/:id', controller.edit)
 router.patch('/edit/:id',
     upload.single('thumbnail'),
+    uploadCoud.upload,
     validate.createPost,
     controller.editPatch
 )
