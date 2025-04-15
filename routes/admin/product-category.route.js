@@ -18,4 +18,13 @@ router.post(
 )
 router.patch('/change-status/:status/:id', controller.changeStatus)
 
+router.get('/edit/:id', controller.edit)
+router.patch('/edit/:id', 
+    upload.single('thumbnail'),
+    uploadCoud.upload,
+    validate.createPost,
+    controller.editPatch
+)
+
+
 module.exports = router;

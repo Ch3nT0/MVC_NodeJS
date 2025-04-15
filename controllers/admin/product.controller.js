@@ -2,7 +2,10 @@ const filterStatusHelper = require("../../helpers/filterStatus");
 const searchHelper = require("../../helpers/search");
 const Product = require("../../models/product.model");
 const paginationHelper = require("../../helpers/pagination")
+const ProductCategory = require("../../models/product-category.model");
 const systemConfig = require("../../config/system")
+const createTreeHelper = require("../../helpers/createTree")
+
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
     const filterStatus = filterStatusHelper(req.query);
@@ -29,18 +32,18 @@ module.exports.index = async (req, res) => {
 
 
     //sort
-    let sort={};
-    if (req.query.sortKey && req.query.sortValue){
-        sort[req.query.sortKey]=req.query.sortValue;
-    }else{
-        sort.position="desc";
+    let sort = {};
+    if (req.query.sortKey && req.query.sortValue) {
+        sort[req.query.sortKey] = req.query.sortValue;
+    } else {
+        sort.position = "desc";
     }
 
     const products = await Product.find(find)
         .sort(sort)
         .limit(ojectPagination.limitItem)
         .skip(ojectPagination.skip);
-    
+
     res.render("admin/pages/products/index", {
         pageTitle: "Danh sách sản phẩm",
         products: products,
@@ -102,8 +105,13 @@ module.exports.deleteItem = async (req, res) => {
 
 // [GET] /admin/products/create
 module.exports.create = async (req, res) => {
+    const records = await ProductCategory.find({
+        deleted: false
+    })
+    const newCategory = createTreeHelper.tree(records);
     res.render("admin/pages/products/create", {
-        pageTitle: "Thêm mới sản phẩm"
+        pageTitle: "Thêm mới sản phẩm",
+        category: newCategory
     })
 }
 // [POST] /admin/products/create
@@ -136,10 +144,15 @@ module.exports.edit = async (req, res) => {
         }
 
         const product = await Product.findOne(find);
+        const records = await ProductCategory.find({
+            deleted: false
+        })
+        const newCategory = createTreeHelper.tree(records);
 
         res.render("admin/pages/products/edit", {
             pageTitle: "Chỉnh sửa sản phẩm",
-            product: product
+            product: product,
+            category: newCategory
         })
     } catch (error) {
         res.redirect(`${systemConfig.prefixAdmin}/products`);
@@ -150,7 +163,7 @@ module.exports.edit = async (req, res) => {
 
 // [PATCH] /admin/products/edit/:id
 module.exports.editPatch = async (req, res) => {
-    const id=req.params.id;
+    const id = req.params.id;
     req.body.price = parseInt(req.body.price)
     req.body.discountPercentage = parseInt(req.body.discountPercentage)
     req.body.stock = parseInt(req.body.stock)
@@ -160,10 +173,10 @@ module.exports.editPatch = async (req, res) => {
         req.body.thumbnail = `/uploads/${req.file.filename}`
     }
     try {
-        await Product.updateOne( { _id : id } ,req.body);
-        req.flash("success","Cập nhật thành công!");
+        await Product.updateOne({ _id: id }, req.body);
+        req.flash("success", "Cập nhật thành công!");
     } catch (error) {
-        req.flash("error","Cập nhật thất bại!");
+        req.flash("error", "Cập nhật thất bại!");
     }
     res.redirect(`back`);
 }
