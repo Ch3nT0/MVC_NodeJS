@@ -35,10 +35,10 @@ block main
 
     if(product.description)
         div(class="mb-4") Miêu tả: !{product.description}
-
-    a(
-        href=`${prefixAdmin}/products/edit/${product.id}`
-        class="btn btn-warning btn-sm"
-    ) Chỉnh sửa
+    if(role.permissions.includes("products_edit"))
+        a(
+            href=`${prefixAdmin}/products/edit/${product.id}`
+            class="btn btn-warning btn-sm"
+        ) Chỉnh sửa
 
     srcipt(src="/admin/js/product.js")

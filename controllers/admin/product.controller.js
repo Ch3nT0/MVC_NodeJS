@@ -3,6 +3,8 @@ const searchHelper = require("../../helpers/search");
 const Product = require("../../models/product.model");
 const paginationHelper = require("../../helpers/pagination")
 const ProductCategory = require("../../models/product-category.model");
+const Account = require("../../models/account.model");
+
 const systemConfig = require("../../config/system")
 const createTreeHelper = require("../../helpers/createTree")
 
@@ -44,6 +46,15 @@ module.exports.index = async (req, res) => {
         .limit(ojectPagination.limitItem)
         .skip(ojectPagination.skip);
 
+    for (const product of products) {
+        const user = await Account.findOne({
+            _id: product.createdBy.account_id
+        })
+        if (user) {
+            product.accountFullName = user.fullName;
+        }
+    }
+
     res.render("admin/pages/products/index", {
         pageTitle: "Danh sách sản phẩm",
         products: products,
@@ -79,7 +90,13 @@ module.exports.changeMulti = async (req, res) => {
             req.flash('success', `Cập nhật trạng thái thành công ${ids.length} sản phẩm`);
             break;
         case "delete-all":
-            await Product.updateMany({ _id: { $in: ids } }, { deleted: true, deleteAt: new Date() })
+            await Product.updateMany({ _id: { $in: ids } }, {
+                deleted: true,
+                deletedBy: {
+                    account_id: res.locals.user.id,
+                    deletedAt: new Date(),
+                }
+            })
             req.flash('success', `Đã xóa thành công ${ids.length} sản phẩm`);
             break;
         case "change-position":
@@ -95,10 +112,16 @@ module.exports.changeMulti = async (req, res) => {
     res.redirect(`back`);
 };
 
-// [DELETE] /admin/products/delete
+// [DELETE] /admin/products/delete/:id
 module.exports.deleteItem = async (req, res) => {
     const id = req.params.id;
-    await Product.updateOne({ _id: id }, { deleted: true, deleteAt: new Date() });
+    await Product.updateOne({ _id: id }, {
+        deleted: true,
+        deletedBy: {
+            account_id: res.locals.user.id,
+            deletedAt: new Date(),
+        }
+    });
     req.flash('success', `Đã xóa thành công sản phẩm`);
     res.redirect(`back`);
 };
@@ -116,7 +139,7 @@ module.exports.create = async (req, res) => {
 }
 // [POST] /admin/products/create
 module.exports.createPost = async (req, res) => {
-    // console.log(req.file);
+
     req.body.price = parseInt(req.body.price)
     req.body.discountPercentage = parseInt(req.body.discountPercentage)
     req.body.stock = parseInt(req.body.stock)
@@ -127,8 +150,10 @@ module.exports.createPost = async (req, res) => {
     } else {
         req.body.position = parseInt(req.body.position)
     }
-    // console.log(req.body)
 
+    req.body.createdBy = {
+        account_id: res.locals.user.id
+    }
     const product = new Product(req.body);
     await product.save();
     res.redirect(`${systemConfig.prefixAdmin}/products`);

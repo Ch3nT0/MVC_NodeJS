@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 const flash = require('express-flash');
 const cookieParser = require('cookie-parser');
+const moment = require('moment');
 const session = require('express-session');
 require('dotenv').config();
 
@@ -27,6 +28,7 @@ app.use(bodyParser.urlencoded())
 
 // App Local Variables
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
+app.locals.moment = moment;
 
 // cấu hình pug
 app.set('views', `${__dirname}/views`);
