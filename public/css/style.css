@@ -40,13 +40,26 @@ header inner-menu>ul>li {
 .product-item .inner-image {
     width: 100%;
     aspect-ratio: 4/3;
-    border-bottom: 1px solid
+    border-bottom: 1px solid #ddd;
+    position: relative;
 }
 
 .product-item .inner-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.product-item .inner-featured {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: green;
+    color: white;
+    padding: 3px 6px;
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: 8px;
 }
 
 .product-item .inner-content {
@@ -122,3 +135,30 @@ header inner-menu>ul>li {
 }
 
 /* End sub-menu */
+
+
+
+/*products-detail */
+
+.product-detail .inner-thumb img {
+    width: 100%;
+    height: auto;
+}
+
+.product-detail .inner-title {
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+.product-detail .inner-category {
+    margin-bottom: 10px;
+}
+
+.product-detail .inner-price-new {
+    color: green;
+    font-weight: 600;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+/*end products-detail */
