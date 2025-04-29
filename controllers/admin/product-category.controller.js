@@ -11,19 +11,15 @@ module.exports.index = async (req, res) => {
     let find = {
         deleted: false,
     };
-
     //status
     if (req.query.status) {
         find.status = req.query.status;
     }
-
     //search
     const ojectSearch = searchHelper(req.query);
     if (ojectSearch.regex) {
         find.title = ojectSearch.regex;
     }
-
-
     //sort
     let sort = {};
     if (req.query.sortKey && req.query.sortValue) {
@@ -31,8 +27,6 @@ module.exports.index = async (req, res) => {
     } else {
         sort.position = "desc";
     }
-
-
     const records = await ProductCategory.find(find).sort(sort);
     const newRecords = createTreeHelper.tree(records);
 
