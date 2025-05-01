@@ -1,7 +1,7 @@
 const Product = require("../../models/product.model")
 const Cart = require("../../models/cart.model")
 const Order = require("../../models/order.model")
-const productHelper = require("../../helpers/product")
+const productHelper= require("../../helpers/product")
 // [GET] /checkout
 module.exports.index = async (req, res) => {
     const cartId = req.cookies.cartId;
@@ -66,8 +66,21 @@ module.exports.order = async (req, res) => {
 
 // [GET] /checkout/succcess/:orderId
 module.exports.success = async (req, res) => {
-    console.log(req.params.orderId);
+    const orderId=req.params.orderId;
+    const order = await Order.findOne({
+        _id:orderId
+    })
+    for(const product of order.products){
+        const productInfo = await Product.findOne({
+            _id:product.product_id
+        }).select("thumbnail title");
+        product.productInfo=productInfo;
+        product.priceNew = productHelper.priceNewProduct(product);
+        product.totalPrice = product.priceNew * product.quantity;
+    }
+    order.totalPrice = order.products.reduce((sum,item)=>sum+ item.totalPrice,0);
     res.render("client/pages/checkout/success", {
-        pageTitle: "Đặt hàng thành công"
+        pageTitle: "Đặt hàng thành công",
+        order:order
     })
 }
