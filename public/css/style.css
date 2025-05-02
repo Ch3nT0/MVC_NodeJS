@@ -223,6 +223,8 @@ header inner-menu>ul>li {
 .inner-body {
     padding: 10px;
     flex-grow: 1;
+    max-height: 450px;
+    overflow: auto;
 }
 
 .inner-incoming,
