@@ -222,13 +222,13 @@ header inner-menu>ul>li {
 
 .inner-body {
     padding: 10px;
-    flex-grow: 1;
     max-height: 450px;
     overflow: auto;
 }
 
 .inner-incoming,
 .inner-outgoing {
+
     margin-bottom: 10px;
     max-width: 80%;
     clear: both;
@@ -268,32 +268,103 @@ header inner-menu>ul>li {
     border: none;
 }
 
-.inner-foot {
+.chat .inner-foot {
     border-top: 1px solid #ddd;
     padding: 10px;
-    display: flex;
 }
 
-.inner-form {
+.chat .inner-form {
     display: flex;
-    width: 100%;
+    align-items: center;
 }
 
-.inner-form input[type="text"] {
+.chat .inner-form input {
     flex: 1;
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 18px;
+    height: 32px;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    padding: 10px;
     outline: none;
 }
 
-.inner-form button {
-    margin-left: 10px;
-    padding: 0 14px;
-    background-color: #ff7db9;
-    border: none;
+.chat .inner-form button {
+    border-radius: 15px;
+    border: 1px solid #FE5DA3;
+    background: #FE5DA3;
     color: #fff;
-    border-radius: 18px;
+    height: 32px;
+    padding: 0 10px;
     cursor: pointer;
-    font-weight: bold;
 }
+
+/* end chat  */
+
+/* emoji icon  */
+.tooltip {
+    visibility: hidden;
+}
+
+.tooltip.shown {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* end emoji icon  */
+
+
+/* box-typing  */
+.inner-list-typing {
+    clear: both;
+    margin-top: 5px;
+}
+
+
+.box-typing {
+    position: relative;
+}
+
+.box-typing .inner-dots {
+    position: relative;
+    height: 20px;
+    width: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #efefef;
+    border-radius: 45px;
+    margin-top: 2px;
+}
+
+.box-typing .inner-dots span {
+    animation: blink 1.5s infinite;
+    height: 5px;
+    width: 5px;
+    background: #252525;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 3px;
+}
+
+.box-typing .inner-dots span:nth-child(2) {
+    animation-delay: 0.25;
+}
+
+.box-typing .inner-dots span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0.1;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.1;
+    }
+}
+
+/* End box-typing */
