@@ -208,7 +208,7 @@ header inner-menu>ul>li {
 /* chat */
 
 .chat {
-    width: 400px;
+    /* width: 400px; */
     margin: 20px auto;
     font-family: sans-serif;
     border: 1px solid #ddd;
@@ -295,6 +295,60 @@ header inner-menu>ul>li {
     height: 32px;
     padding: 0 10px;
     cursor: pointer;
+}
+
+.chat .inner-body .inner-images img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    background: #efefef;
+    padding: 10px;
+    margin: 0 5px 5px 0;
+    border-radius: 5px;
+}
+
+.chat .inner-body .inner-outgoing .inner-images {
+    margin-left: auto;
+    text-align: right;
+}
+
+.chat .inner-body .inner-outgoing .inner-images img {
+    margin: 0 0 5px 5px;
+}
+
+
+
+
+.chat .inner-preview-images {
+    position: relative;
+}
+
+.chat .inner-preview-images .custom-file-container__custom-file__custom-file-control {
+    display: none;
+}
+.chat .inner-preview-images label{
+    display: none;
+}
+
+.chat .inner-preview-images .custom-file-container__image-preview {
+    margin: 0;
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+}
+
+.chat .inner-preview-images .custom-file-container__custom-file {
+    display: none;
+}
+
+.chat .inner-preview-images .custom-file-container__image-preview {
+    height: auto;
+    padding: 0;
+    border-radius: 0;
+}
+
+.chat .inner-preview-images .custom-file-container__image-multi-preview {
+    width: 90px;
+    background-size: contain
 }
 
 /* end chat  */
