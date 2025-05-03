@@ -32,9 +32,9 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
     const body = document.querySelector(".chat .inner-body");
     const myId = document.querySelector("[my-id]").getAttribute("my-id");
     const boxTyping = document.querySelector(".chat .inner-list-typing")
-    let htmlFullName="";
-    let htmlContent="";
-    let htmlmage="";
+    let htmlFullName = "";
+    let htmlContent = "";
+    let htmlmage = "";
     const div = document.createElement("div");
     if (myId == data.userId) {
         div.classList.add("inner-outgoing");
@@ -54,13 +54,13 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
 
     if (data.images.length > 0) {
         htmlmage = `<div class="inner-images">`
-        for(const image of data.images){
-            htmlmage+=`<img src="${image}">`;
+        for (const image of data.images) {
+            htmlmage += `<img src="${image}">`;
         }
-        htmlmage+=`</div>`;
+        htmlmage += `</div>`;
     }
 
-    div.innerHTML=`
+    div.innerHTML = `
         ${htmlFullName}
         ${htmlContent}
         ${htmlmage}
@@ -68,6 +68,9 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
 
     body.insertBefore(div, boxTyping);
     bodyChat.scrollTop = bodyChat.scrollHeight;
+    // Preview Full Image
+    const gallery = new Viewer(div);
+    // End Preview Full Image 
 })
 // End SERVER_RETURN_MESSAGE 
 
@@ -157,3 +160,12 @@ if (elementListTyping) {
     })
 }
 // End SEVER_RETURN_TYPING
+
+
+
+// Preview Full Image
+const bodyChatPreviewImage = document.querySelector(".chat .inner-body");
+if (bodyChatPreviewImage) {
+    const gallery = new Viewer(bodyChatPreviewImage);
+}
+// End Preview Full Image 
